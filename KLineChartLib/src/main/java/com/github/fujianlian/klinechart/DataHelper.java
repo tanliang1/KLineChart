@@ -1,5 +1,7 @@
 package com.github.fujianlian.klinechart;
 
+import android.util.Log;
+
 import java.util.List;
 
 /**
@@ -7,6 +9,10 @@ import java.util.List;
  * Created by tifezh on 2016/11/26.
  */
 public class DataHelper {
+    private final  static  String  TAG = "DataHelper";
+    private final  static  int  ACROSS_TYPE_LIVE = 1;
+    private final  static  int  ACROSS_TYPE_DEAD = 2;
+
 
     /**
      * 计算RSI
@@ -47,6 +53,7 @@ public class DataHelper {
      * @param dataList
      */
     static void calculateKDJ(List<KLineEntity> dataList) {
+        Log.d(TAG," calculateKDJ:"+dataList.size());
         float k = 0;
         float d = 0;
         for (int i = 0; i < dataList.size(); i++) {
@@ -86,8 +93,29 @@ public class DataHelper {
                 point.d = d;
                 point.j = 3f * k - 2 * d;
             }
+            if (i > 1) {
+                KLineEntity pointPreview = dataList.get(i-1);
+                if (pointPreview.k < pointPreview.d && point.k > point.d) {
+                    point.acrossType = ACROSS_TYPE_LIVE;
+                } else if (pointPreview.k > pointPreview.d && point.k < point.d) {
+                    point.acrossType = ACROSS_TYPE_DEAD;
+                } else {
+                    point.acrossType = 0;
+                }
+            }
         }
 
+        for (int i = 0; i < dataList.size(); i++) {
+            KLineEntity point = dataList.get(i);
+            if (point.acrossType == ACROSS_TYPE_LIVE) {
+                Log.d(TAG," kdj:jingcha "+point.getDate());
+            } else if (point.acrossType == ACROSS_TYPE_DEAD) {
+                Log.d(TAG," kdj:sicha "+point.getDate());
+            } else {
+
+            }
+
+        }
     }
 
     /**

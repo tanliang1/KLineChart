@@ -1,13 +1,20 @@
 package com.github.fujianlian.klinechartdemo;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.util.Log;
+import android.widget.Toolbar;
 
 import com.github.fujianlian.klinechart.DataHelper;
 import com.github.fujianlian.klinechart.KLineEntity;
+import com.github.fujianlian.klinechart.net.OkHttpUtils;
+import com.github.fujianlian.klinechart.net.TokenBody;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +26,8 @@ import java.util.List;
 
 public class DataRequest {
     private static List<KLineEntity> datas = null;
+    private static String TAG = "DataRequest";
+
 
     public static String getStringFromAssert(Context context, String fileName) {
         try {
@@ -33,10 +42,20 @@ public class DataRequest {
         return "";
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static List<KLineEntity> getALL(Context context) {
         if (datas == null) {
             final List<KLineEntity> data = new Gson().fromJson(getStringFromAssert(context, "ibm.json"), new TypeToken<List<KLineEntity>>() {
             }.getType());
+            Gson gson = new Gson();
+            String body = gson.toJson(new TokenBody());
+            try {
+                String result = OkHttpUtils.getInstance().post(OkHttpUtils.url1,body);
+                Log.d(TAG,"result:" + result);
+            } catch (IOException ex) {
+
+            }
+
             DataHelper.calculate(data);
             datas = data;
         }
