@@ -1,7 +1,9 @@
 package com.github.fujianlian.klinechartdemo
 
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.support.v7.app.AppCompatActivity
 import android.widget.TextView
 import com.github.fujianlian.klinechart.DataHelper
@@ -9,6 +11,7 @@ import com.github.fujianlian.klinechart.KLineChartAdapter
 import com.github.fujianlian.klinechart.KLineEntity
 import com.github.fujianlian.klinechart.draw.Status
 import com.github.fujianlian.klinechart.formatter.DateFormatter
+import com.github.fujianlian.klinechartdemo.Data.DataRequest
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.textColor
@@ -26,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     // 副图指标下标
     private var subIndex = -1
 
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -37,10 +41,11 @@ class MainActivity : AppCompatActivity() {
         initListener()
     }
 
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
     private fun initData() {
         kLineChartView.justShowLoading()
         doAsync {
-            datas = DataRequest.getALL(this@MainActivity).subList(0, 500)
+            datas = DataRequest.getInstance().getALL(this@MainActivity).subList(0, 500)
             DataHelper.calculate(datas)
             runOnUiThread {
                 adapter.addFooterData(datas)
@@ -69,6 +74,7 @@ class MainActivity : AppCompatActivity() {
                 maText.textColor = Color.WHITE
                 kLineChartView.changeMainDrawType(Status.BOLL)
             }
+            initData();
         }
         mainHide.setOnClickListener {
             if (mainIndex != -1) {

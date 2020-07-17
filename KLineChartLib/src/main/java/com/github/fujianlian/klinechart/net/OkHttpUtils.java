@@ -1,5 +1,6 @@
 package com.github.fujianlian.klinechart.net;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -38,24 +39,19 @@ public class OkHttpUtils {
     public static final MediaType JSON
             = MediaType.get("application/json; charset=utf-8");
     public static final String url = "https://dataapi.joinquant.com/apis";
-    public static final String url1 = "www.baidu.com";
 
 
 
     OkHttpClient client = new OkHttpClient();
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     public String post(String url, String json) throws IOException {
-        /*RequestBody body = RequestBody.create(json, JSON);*/
-        FormBody.Builder formBody = new FormBody.Builder();
-        formBody.add("method","get_current_token");
-        formBody.add("mob","15210366756");
-        formBody.add("pwd","asdf456987");
+        RequestBody body = RequestBody.create(json, JSON);
         Request request = new Request.Builder()
                 .url(url)
-                .post(formBody.build())
+                .post(body)
                 .build();
-        try (Response response = client.newCall(request).execute()) {
+        try (@SuppressLint("NewApi") Response response = client.newCall(request).execute()) {
             return response.body().string();
         }
     }

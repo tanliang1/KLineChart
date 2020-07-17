@@ -1,4 +1,4 @@
-package com.github.fujianlian.klinechartdemo;
+package com.github.fujianlian.klinechartdemo.Data;
 
 import android.content.Context;
 import android.os.Build;
@@ -8,6 +8,7 @@ import android.widget.Toolbar;
 
 import com.github.fujianlian.klinechart.DataHelper;
 import com.github.fujianlian.klinechart.KLineEntity;
+import com.github.fujianlian.klinechart.net.GetSecuritiesBody;
 import com.github.fujianlian.klinechart.net.OkHttpUtils;
 import com.github.fujianlian.klinechart.net.TokenBody;
 import com.google.gson.Gson;
@@ -27,9 +28,22 @@ import java.util.List;
 public class DataRequest {
     private static List<KLineEntity> datas = null;
     private static String TAG = "DataRequest";
+    private static DataRequest mInstance;
+
+    public static DataRequest getInstance() {
+        if (mInstance == null) {
+            synchronized (DataRequest.class){
+                if (mInstance == null) {
+                    mInstance = new DataRequest();
+                }
+            }
+        }
+        return mInstance;
+
+    }
 
 
-    public static String getStringFromAssert(Context context, String fileName) {
+    public  String getStringFromAssert(Context context, String fileName) {
         try {
             InputStream in = context.getResources().getAssets().open(fileName);
             int length = in.available();
@@ -43,23 +57,44 @@ public class DataRequest {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public static List<KLineEntity> getALL(Context context) {
+    public  List<KLineEntity> getALL(Context context) {
         if (datas == null) {
             final List<KLineEntity> data = new Gson().fromJson(getStringFromAssert(context, "ibm.json"), new TypeToken<List<KLineEntity>>() {
             }.getType());
-            Gson gson = new Gson();
-            String body = gson.toJson(new TokenBody());
-            try {
-                String result = OkHttpUtils.getInstance().post(OkHttpUtils.url1,body);
-                Log.d(TAG,"result:" + result);
-            } catch (IOException ex) {
-
-            }
-
+             getData();
             DataHelper.calculate(data);
             datas = data;
         }
         return datas;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private String getToken() {
+        Gson gson = new Gson();
+        String body = gson.toJson(new TokenBody());
+        try {
+            String result =  OkHttpUtils.getInstance().post(OkHttpUtils.url,body);
+            Log.d(TAG,"getToken:" + result);
+            return  result;
+        } catch (Exception ex) {
+            Log.d(TAG,"IOException:" + ex);
+        }
+        return "";
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private  String getData() {
+        Gson gson = new Gson();
+        GetSecuritiesBody getSecuritiesBody = new GetSecuritiesBody();
+        getSecuritiesBody.setToken(getToken());
+        String body = gson.toJson(getSecuritiesBody);
+        try {
+            String result =  OkHttpUtils.getInstance().post(OkHttpUtils.url,body);
+            Log.d(TAG,"getData:" + result);
+        } catch (Exception ex) {
+            Log.d(TAG,"IOException:" + ex);
+        }
+        return "";
     }
 
     /**
@@ -69,7 +104,8 @@ public class DataRequest {
      * @param offset  开始的索引
      * @param size    每次查询的条数
      */
-    public static List<KLineEntity> getData(Context context, int offset, int size) {
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public  List<KLineEntity> getData(Context context, int offset, int size) {
         List<KLineEntity> all = getALL(context);
         List<KLineEntity> data = new ArrayList<>();
         int start = Math.max(0, all.size() - 1 - offset - size);
