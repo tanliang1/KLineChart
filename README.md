@@ -1,10 +1,4 @@
-# KLineChart
 
-Android仿火币K线图实现（包含MA,BOLL,MACD,KDJ,RSI,WR指标）
-
-本项目是在 [tifezh的KChartView](https://github.com/tifezh/KChartView) 基础上进行修改的，新增了KDJ、WR指标、最大值和最小值展示，对UI展示进行了修改。
-
-建议使用之前先查看[常见问题](./problem.md)
 
 ## 项目运行效果
 
@@ -12,9 +6,7 @@ Android仿火币K线图实现（包含MA,BOLL,MACD,KDJ,RSI,WR指标）
 
 ![截图](https://github.com/fujianlian/KLineChart/raw/master/img/1.png)
 
-## app下载
 
-![二维码](https://github.com/fujianlian/KLineChart/raw/master/img/qrcode.png)
 
 ## 配置使用
 
@@ -120,5 +112,5 @@ public void setMainDrawLine(boolean isLine) {
 
 
 
-## 具体使用参照KLineChartDemo
+
 
