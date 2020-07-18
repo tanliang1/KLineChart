@@ -1,1 +1,1 @@
-include ':KLineChartDemo', ':KLineChartLib'
+include ':KLineChartDemo'

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context=".MainActivity">
+    tools:context="flag.MainActivity">
 
     <TextView
         android:id="@+id/text1"
@@ -140,7 +140,7 @@
         android:layout_below="@+id/fenText"
         android:background="#17181f" />
 
-    <com.github.fujianlian.klinechart.KLineChartView
+    <flag.views.KLineChartView
         android:id="@+id/kLineChartView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
