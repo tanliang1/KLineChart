@@ -5,11 +5,12 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.RequiresApi;
+import android.telecom.Call;
 
 import java.io.IOException;
 
 
-import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.CookieJar;
 import okhttp3.FormBody;
 import okhttp3.MediaType;
@@ -40,8 +41,6 @@ public class OkHttpUtils {
             = MediaType.get("application/json; charset=utf-8");
     public static final String url = "https://dataapi.joinquant.com/apis";
 
-
-
     OkHttpClient client = new OkHttpClient();
 
 
@@ -51,9 +50,19 @@ public class OkHttpUtils {
                 .url(url)
                 .post(body)
                 .build();
+
         try (@SuppressLint("NewApi") Response response = client.newCall(request).execute()) {
             return response.body().string();
         }
+    }
+
+    public void postAysn(String url, String jsonBody, Callback callback) {
+        RequestBody body = RequestBody.create(jsonBody, JSON);
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+         client.newCall(request).enqueue(callback);
     }
 }
 

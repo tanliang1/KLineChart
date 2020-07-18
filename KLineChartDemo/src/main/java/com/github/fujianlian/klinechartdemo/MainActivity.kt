@@ -56,6 +56,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
     private fun initListener() {
         maText.setOnClickListener {
             if (mainIndex != 0) {
@@ -74,7 +75,9 @@ class MainActivity : AppCompatActivity() {
                 maText.textColor = Color.WHITE
                 kLineChartView.changeMainDrawType(Status.BOLL)
             }
-            initData();
+            doAsync {
+                DataRequest.getInstance().getALL(this@MainActivity);
+            }
         }
         mainHide.setOnClickListener {
             if (mainIndex != -1) {
