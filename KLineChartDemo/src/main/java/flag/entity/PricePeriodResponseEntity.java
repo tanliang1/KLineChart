@@ -1,4 +1,4 @@
-package flag.data.entity;
+package flag.entity;
 
 public class PricePeriodResponseEntity {
     private String date;//日期
@@ -16,6 +16,9 @@ public class PricePeriodResponseEntity {
     private String avg ;//
 
     private String pre_close ;//
+
+    private String code ;//
+
     //  当code为期货和期权时，包含以下返回值:
 
     public String getDate() {
@@ -112,6 +115,14 @@ public class PricePeriodResponseEntity {
 
     public void setPre_close(String pre_close) {
         this.pre_close = pre_close;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     @Override

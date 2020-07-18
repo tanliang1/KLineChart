@@ -1,4 +1,4 @@
-package flag.data.entity;
+package flag.entity;
 
 public class SecuritiesEntity extends BaseRequestEntity {
     private String method = "get_ticks_period";

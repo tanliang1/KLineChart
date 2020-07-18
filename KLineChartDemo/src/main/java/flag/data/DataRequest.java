@@ -5,13 +5,13 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
+import flag.entity.AllSecuritiesEntity;
+import flag.entity.PricePeriodRequestEntity;
+import flag.entity.PricePeriodResponseEntity;
+import flag.entity.StockResponseEntity;
+import flag.entity.TokenEntity;
 import flag.ui.KLineEntity;
 import flag.net.OkHttpUtils;
-import flag.data.entity.AllSecuritiesEntity;
-import flag.data.entity.PricePeriodRequestEntity;
-import flag.data.entity.PricePeriodResponseEntity;
-import flag.data.entity.StockResponseEntity;
-import flag.data.entity.TokenEntity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

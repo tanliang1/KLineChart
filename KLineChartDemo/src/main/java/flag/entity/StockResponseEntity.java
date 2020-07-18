@@ -1,4 +1,4 @@
-package flag.data.entity;
+package flag.entity;
 
 public class StockResponseEntity {
     private String code;//标的代码

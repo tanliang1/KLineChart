@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="flag">
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -17,13 +18,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <provider
+            android:name="flag.db.FlagProvider"
+            android:authorities="flag.db.FlagProvider"
+            android:process=":provider"
+            tools:ignore="WrongManifestParent"></provider>
     </application>
-
-  <!--  <provider
-        android:name="flag.db.FlagProvider"
-        android:process=":provider"
-        android:authorities="flag.db.FlagProvider"
-        tools:ignore="WrongManifestParent">
-    </provider>-->
-
 </manifest>

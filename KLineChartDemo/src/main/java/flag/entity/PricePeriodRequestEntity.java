@@ -1,4 +1,4 @@
-package flag.data.entity;
+package flag.entity;
 
 public class PricePeriodRequestEntity extends BaseRequestEntity {
     private String method = "get_price_period";

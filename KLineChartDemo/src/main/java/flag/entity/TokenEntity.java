@@ -1,4 +1,4 @@
-package flag.data.entity;
+package flag.entity;
 
 public class TokenEntity {
     private String method = "get_current_token";
