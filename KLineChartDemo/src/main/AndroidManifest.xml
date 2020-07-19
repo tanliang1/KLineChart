@@ -19,10 +19,8 @@
             </intent-filter>
         </activity>
         <provider
-            android:name="com.xiaoxiong.flag.db.FlagProvider"
-            android:authorities="com.xiaoxiong.flag"
-            android:process=":provider">
-
+            android:name=".db.FlagProvider"
+            android:authorities="com.xiaoxion.flag.db.FlagProvider">
         </provider>
     </application>
 </manifest>
