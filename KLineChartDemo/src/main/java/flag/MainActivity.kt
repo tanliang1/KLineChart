@@ -7,11 +7,11 @@ import android.support.annotation.RequiresApi
 import android.support.v7.app.AppCompatActivity
 import android.widget.TextView
 import flag.data.DataHelper
-import flag.ui.draw.Status
-import flag.ui.formatter.DateFormatter
 import flag.data.DataRequest
 import flag.ui.KLineChartAdapter
 import flag.ui.KLineEntity
+import flag.ui.draw.Status
+import flag.ui.formatter.DateFormatter
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.textColor

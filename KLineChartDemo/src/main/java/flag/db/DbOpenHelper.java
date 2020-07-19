@@ -4,7 +4,10 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import flag.utils.LogUtil;
+
 public class DbOpenHelper extends SQLiteOpenHelper {
+    private static final String TAG = "DbOpenHelper";
     private static final String DB_NAME = "flag.db";
     public static final String STOCK_PRICE_TABLE_NAME = "price";
 
@@ -19,6 +22,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_BOOK_TABLE);
+        LogUtil.d(TAG,"onCreate,CREATE_BOOK_TABLE"+CREATE_BOOK_TABLE);
     }
 
     @Override

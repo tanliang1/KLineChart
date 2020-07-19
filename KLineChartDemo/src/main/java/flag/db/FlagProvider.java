@@ -8,10 +8,11 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import flag.utils.LogUtil;
 
 public class FlagProvider extends ContentProvider {
 
@@ -33,6 +34,7 @@ public class FlagProvider extends ContentProvider {
     public boolean onCreate() {
         mContext = getContext();
         mDb = new DbOpenHelper(mContext).getWritableDatabase();
+        LogUtil.d(TAG,"onCreate,mDb"+mDb);
         return false;
     }
 

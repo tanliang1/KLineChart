@@ -3,9 +3,6 @@ package flag.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import flag.ui.BaseKLineChartAdapter;
-import flag.ui.KLineEntity;
-
 /**
  * 数据适配器
  * Created by tifezh on 2016/6/18.
