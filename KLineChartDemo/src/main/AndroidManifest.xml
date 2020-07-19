@@ -21,7 +21,8 @@
         <provider
             android:name="flag.db.FlagProvider"
             android:authorities="flag.db.FlagProvider"
-            android:process=":provider"
-            tools:ignore="WrongManifestParent"></provider>
+            android:process=":provider">
+
+        </provider>
     </application>
 </manifest>
