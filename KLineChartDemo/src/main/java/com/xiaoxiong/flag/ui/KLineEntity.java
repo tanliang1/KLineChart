@@ -12,52 +12,52 @@ public class KLineEntity implements IKLine {
     public String code;
 
     public String getDate() {
-        return Date;
+        return date;
     }
 
     @Override
     public float getOpenPrice() {
-        return Open;
+        return open;
     }
 
     @Override
     public float getHighPrice() {
-        return High;
+        return high;
     }
 
     @Override
     public float getLowPrice() {
-        return Low;
+        return low;
     }
 
     @Override
     public float getClosePrice() {
-        return Close;
+        return close;
     }
 
     @Override
-    public float getMA5Price() {
-        return MA5Price;
+    public float getMa5Price() {
+        return ma5Price;
     }
 
     @Override
-    public float getMA10Price() {
-        return MA10Price;
+    public float getMa10Price() {
+        return ma10Price;
     }
 
     @Override
-    public float getMA20Price() {
-        return MA20Price;
+    public float getMa20Price() {
+        return ma20Price;
     }
 
     @Override
-    public float getMA30Price() {
-        return MA30Price;
+    public float getMa30Price() {
+        return ma30Price;
     }
 
     @Override
-    public float getMA60Price() {
-        return MA60Price;
+    public float getMa60Price() {
+        return ma60Price;
     }
 
     @Override
@@ -117,35 +117,35 @@ public class KLineEntity implements IKLine {
 
     @Override
     public float getVolume() {
-        return Volume;
+        return volume;
     }
 
     @Override
-    public float getMA5Volume() {
-        return MA5Volume;
+    public float getMa5Volume() {
+        return ma5Volume;
     }
 
     @Override
-    public float getMA10Volume() {
-        return MA10Volume;
+    public float getMa10Volume() {
+        return ma10Volume;
     }
 
-    public String Date;
-    public float Open;
-    public float High;
-    public float Low;
-    public float Close;
-    public float Volume;
+    public String date = "";
+    public float open;
+    public float high;
+    public float low;
+    public float close;
+    public float volume;
 
-    public float MA5Price;
+    public float ma5Price;
 
-    public float MA10Price;
+    public float ma10Price;
 
-    public float MA20Price;
+    public float ma20Price;
 
-    public float MA30Price;
+    public float ma30Price;
 
-    public float MA60Price;
+    public float ma60Price;
 
     public float dea;
 
@@ -169,9 +169,9 @@ public class KLineEntity implements IKLine {
 
     public float dn;
 
-    public float MA5Volume;
+    public float ma5Volume;
 
-    public float MA10Volume;
+    public float ma10Volume;
 
     public int acrossType = 0;
 

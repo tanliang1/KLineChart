@@ -79,8 +79,8 @@ class MainActivity : AppCompatActivity() {
             }
             doAsync {
                 DataOperationHelper.initData(this@MainActivity)
-                DataOperationHelper.saveData(this@MainActivity)
-                DataOperationHelper.calculateDate()
+              /*  DataOperationHelper.saveData(this@MainActivity)
+                DataOperationHelper.calculateDate(this@MainActivity)*/
             }
         }
         mainHide.setOnClickListener {

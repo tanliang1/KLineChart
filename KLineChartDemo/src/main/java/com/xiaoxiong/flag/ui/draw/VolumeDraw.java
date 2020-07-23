@@ -40,11 +40,11 @@ public class VolumeDraw implements IChartDraw<IVolume> {
             @NonNull Canvas canvas, @NonNull BaseKLineChartView view, int position) {
 
         drawHistogram(canvas, curPoint, lastPoint, curX, view, position);
-        if (lastPoint.getMA5Volume() != 0f) {
-            view.drawVolLine(canvas, ma5Paint, lastX, lastPoint.getMA5Volume(), curX, curPoint.getMA5Volume());
+        if (lastPoint.getMa5Volume() != 0f) {
+            view.drawVolLine(canvas, ma5Paint, lastX, lastPoint.getMa5Volume(), curX, curPoint.getMa5Volume());
         }
-        if (lastPoint.getMA10Volume() != 0f) {
-            view.drawVolLine(canvas, ma10Paint, lastX, lastPoint.getMA10Volume(), curX, curPoint.getMA10Volume());
+        if (lastPoint.getMa10Volume() != 0f) {
+            view.drawVolLine(canvas, ma10Paint, lastX, lastPoint.getMa10Volume(), curX, curPoint.getMa10Volume());
         }
     }
 
@@ -70,21 +70,21 @@ public class VolumeDraw implements IChartDraw<IVolume> {
         String text = "VOL:" + getValueFormatter().format(point.getVolume()) + "  ";
         canvas.drawText(text, x, y, view.getTextPaint());
         x += view.getTextPaint().measureText(text);
-        text = "MA5:" + getValueFormatter().format(point.getMA5Volume()) + "  ";
+        text = "MA5:" + getValueFormatter().format(point.getMa5Volume()) + "  ";
         canvas.drawText(text, x, y, ma5Paint);
         x += ma5Paint.measureText(text);
-        text = "MA10:" + getValueFormatter().format(point.getMA10Volume());
+        text = "MA10:" + getValueFormatter().format(point.getMa10Volume());
         canvas.drawText(text, x, y, ma10Paint);
     }
 
     @Override
     public float getMaxValue(IVolume point) {
-        return Math.max(point.getVolume(), Math.max(point.getMA5Volume(), point.getMA10Volume()));
+        return Math.max(point.getVolume(), Math.max(point.getMa5Volume(), point.getMa10Volume()));
     }
 
     @Override
     public float getMinValue(IVolume point) {
-        return Math.min(point.getVolume(), Math.min(point.getMA5Volume(), point.getMA10Volume()));
+        return Math.min(point.getVolume(), Math.min(point.getMa5Volume(), point.getMa10Volume()));
     }
 
     @Override

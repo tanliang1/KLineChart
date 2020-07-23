@@ -110,7 +110,7 @@ public class DataHelper {
 
         for (int i = 0; i < dataList.size(); i++) {
             KLineEntity point = dataList.get(i);
-            if (point.Date == "2020-07-08" || point.Date == "2020-07-07")
+            if (point.date == "2020-07-08" || point.date == "2020-07-07")
             if (point.acrossType == ACROSS_TYPE_LIVE) {
                 Log.d(TAG," kdj:jingcha "+point.getDate());
             } else if (point.acrossType == ACROSS_TYPE_DEAD) {
@@ -209,13 +209,13 @@ public class DataHelper {
                 float md = 0;
                 for (int j = i - n + 1; j <= i; j++) {
                     float c = dataList.get(j).getClosePrice();
-                    float m = point.getMA20Price();
+                    float m = point.getMa20Price();
                     float value = c - m;
                     md += value * value;
                 }
                 md = md / (n - 1);
                 md = (float) Math.sqrt(md);
-                point.mb = point.getMA20Price();
+                point.mb = point.getMa20Price();
                 point.up = point.mb + 2f * md;
                 point.dn = point.mb - 2f * md;
             }
@@ -245,44 +245,44 @@ public class DataHelper {
             ma30 += closePrice;
             ma60 += closePrice;
             if (i == 4) {
-                point.MA5Price = ma5 / 5f;
+                point.ma5Price = ma5 / 5f;
             } else if (i >= 5) {
                 ma5 -= dataList.get(i - 5).getClosePrice();
-                point.MA5Price = ma5 / 5f;
+                point.ma5Price = ma5 / 5f;
             } else {
-                point.MA5Price = 0f;
+                point.ma5Price = 0f;
             }
             if (i == 9) {
-                point.MA10Price = ma10 / 10f;
+                point.ma10Price = ma10 / 10f;
             } else if (i >= 10) {
                 ma10 -= dataList.get(i - 10).getClosePrice();
-                point.MA10Price = ma10 / 10f;
+                point.ma10Price = ma10 / 10f;
             } else {
-                point.MA10Price = 0f;
+                point.ma10Price = 0f;
             }
             if (i == 19) {
-                point.MA20Price = ma20 / 20f;
+                point.ma20Price = ma20 / 20f;
             } else if (i >= 20) {
                 ma20 -= dataList.get(i - 20).getClosePrice();
-                point.MA20Price = ma20 / 20f;
+                point.ma20Price = ma20 / 20f;
             } else {
-                point.MA20Price = 0f;
+                point.ma20Price = 0f;
             }
             if (i == 29) {
-                point.MA30Price = ma30 / 30f;
+                point.ma30Price = ma30 / 30f;
             } else if (i >= 30) {
                 ma30 -= dataList.get(i - 30).getClosePrice();
-                point.MA30Price = ma30 / 30f;
+                point.ma30Price = ma30 / 30f;
             } else {
-                point.MA30Price = 0f;
+                point.ma30Price = 0f;
             }
             if (i == 59) {
-                point.MA60Price = ma60 / 60f;
+                point.ma60Price = ma60 / 60f;
             } else if (i >= 60) {
                 ma60 -= dataList.get(i - 60).getClosePrice();
-                point.MA60Price = ma60 / 60f;
+                point.ma60Price = ma60 / 60f;
             } else {
-                point.MA60Price = 0f;
+                point.ma60Price = 0f;
             }
         }
     }
@@ -313,21 +313,21 @@ public class DataHelper {
             volumeMa10 += entry.getVolume();
 
             if (i == 4) {
-                entry.MA5Volume = (volumeMa5 / 5f);
+                entry.ma5Volume = (volumeMa5 / 5f);
             } else if (i > 4) {
                 volumeMa5 -= entries.get(i - 5).getVolume();
-                entry.MA5Volume = volumeMa5 / 5f;
+                entry.ma5Volume = volumeMa5 / 5f;
             } else {
-                entry.MA5Volume = 0f;
+                entry.ma5Volume = 0f;
             }
 
             if (i == 9) {
-                entry.MA10Volume = volumeMa10 / 10f;
+                entry.ma10Volume = volumeMa10 / 10f;
             } else if (i > 9) {
                 volumeMa10 -= entries.get(i - 10).getVolume();
-                entry.MA10Volume = volumeMa10 / 10f;
+                entry.ma10Volume = volumeMa10 / 10f;
             } else {
-                entry.MA10Volume = 0f;
+                entry.ma10Volume = 0f;
             }
         }
     }

@@ -4,6 +4,7 @@
     package="com.xiaoxiong.flag">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
 
     <application
         android:allowBackup="true"
@@ -20,7 +21,7 @@
         </activity>
         <provider
             android:name=".db.FlagProvider"
-            android:authorities="com.xiaoxion.flag.db.FlagProvider">
+            android:authorities="com.xiaoxiong.flag.db.FlagProvider">
         </provider>
     </application>
 </manifest>

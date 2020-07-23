@@ -24,7 +24,7 @@ public class FlagProvider extends ContentProvider {
 
     /** Current database version */
     public static final String TAG = "FlagProvider";
-    public static final String AUTHORITY = "com.xiaoxion.flag.db.FlagProvider";
+    public static final String AUTHORITY = "com.xiaoxiong.flag.db.FlagProvider";
     public static final Uri STOCK_PRICE_CONTENT_URI = Uri.parse("content://"+AUTHORITY+"/"+STOCK_PRICE_TABLE_NAME);
     public static final Uri STOCKS_CONTENT_URI = Uri.parse("content://"+AUTHORITY+"/"+STOCKS_TABLE_NAME);
     private Context mContext;

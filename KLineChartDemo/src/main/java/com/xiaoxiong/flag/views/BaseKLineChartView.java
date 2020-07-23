@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.support.v4.view.GestureDetectorCompat;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -347,7 +348,9 @@ public abstract class BaseKLineChartView extends ScrollAndScaleView {
      */
     private int calculateWidth(String text) {
         Rect rect = new Rect();
-        mTextPaint.getTextBounds(text, 0, text.length(), rect);
+        if (!TextUtils.isEmpty(text)) {
+            mTextPaint.getTextBounds(text, 0, text.length(), rect);
+        }
         return rect.width() + 5;
     }
 
@@ -419,7 +422,11 @@ public abstract class BaseKLineChartView extends ScrollAndScaleView {
 
         float translateX = xToTranslateX(0);
         if (translateX >= startX && translateX <= stopX) {
-            canvas.drawText(getAdapter().getDate(mStartIndex), 0, y, mTextPaint);
+            try{
+                canvas.drawText(getAdapter().getDate(mStartIndex), 0, y, mTextPaint);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
         translateX = xToTranslateX(mWidth);
         if (translateX >= startX && translateX <= stopX) {

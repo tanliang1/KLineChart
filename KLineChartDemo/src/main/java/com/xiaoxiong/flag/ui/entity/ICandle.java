@@ -31,27 +31,27 @@ public interface ICandle {
     /**
      * 五(月，日，时，分，5分等)均价
      */
-    float getMA5Price();
+    float getMa5Price();
 
     /**
      * 十(月，日，时，分，5分等)均价
      */
-    float getMA10Price();
+    float getMa10Price();
 
     /**
      * 二十(月，日，时，分，5分等)均价
      */
-    float getMA20Price();
+    float getMa20Price();
 
     /**
      * 三十(月，日，时，分，5分等)均价
      */
-    float getMA30Price();
+    float getMa30Price();
 
     /**
      * 六十(月，日，时，分，5分等)均价
      */
-    float getMA60Price();
+    float getMa60Price();
 
     // 以下为BOLL数据
     /**

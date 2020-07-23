@@ -3,6 +3,7 @@ package com.xiaoxiong.flag.data;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -14,15 +15,20 @@ import com.xiaoxiong.flag.entity.StockResponseEntity;
 import com.xiaoxiong.flag.entity.TokenEntity;
 import com.xiaoxiong.flag.net.OkHttpUtils;
 import com.xiaoxiong.flag.ui.KLineEntity;
+import com.xiaoxiong.flag.utils.DateUtil;
+import com.xiaoxiong.flag.utils.SharedPreferencesUtil;
 
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.xiaoxiong.flag.data.DataOperationHelper.ALL_SECURITIES_KEY;
 
 
 /**
@@ -65,14 +71,13 @@ public class DataRequest {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public  List<KLineEntity> getALL(Context context) {
-        StockResponseEntity stockResponseEntity = new StockResponseEntity();
-        stockResponseEntity.setCode("000008.XSHE");
-        getPricePeriodSecurities(stockResponseEntity);
-        final List<KLineEntity> data = new Gson().fromJson(getStringFromAssert(context, "ibm.json"), new TypeToken<List<KLineEntity>>() {
-        }.getType());
+        if (datas == null) {
+            final List<KLineEntity> data = new Gson().fromJson(getStringFromAssert(context, "ibm.json"), new TypeToken<List<KLineEntity>>() {
+            }.getType());
 
-        DataHelper.calculate(data);
-        datas = data;
+            DataHelper.calculate(data);
+            datas = data;
+        }
         return datas;
     }
 
@@ -90,13 +95,21 @@ public class DataRequest {
         return "";
     }
 
+    public List<StockResponseEntity> getTestStocks() {
+        List<StockResponseEntity> getAllSecurities = new ArrayList<>();
+        StockResponseEntity stockResponseEntity = new StockResponseEntity();
+        stockResponseEntity.setCode("000001.XSHE");
+        stockResponseEntity.setStart_date("1991-04-03");
+        stockResponseEntity.setEnd_date(getCurFormatDate());
+        getAllSecurities.add(stockResponseEntity);
+        return getAllSecurities;
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public  List<StockResponseEntity> getAllSecurities() {
-        if (sSecuritiesEntities.size() == 0) {
-            StockResponseEntity stockResponseEntity = new StockResponseEntity();
-            stockResponseEntity.setCode("000001.XSHE");
-            sSecuritiesEntities.add(stockResponseEntity);
-            return sSecuritiesEntities;
+    public  List<StockResponseEntity> getAllSecurities(Context context) {
+        List<StockResponseEntity> getAllSecurities = SpDataHelper.getAllSecuritiesFromSp(context);
+        if (getAllSecurities != null) {
+            return getAllSecurities;
         }
         List<StockResponseEntity> securitiesEntities = new ArrayList<>();
         Gson gson = new Gson();
@@ -146,8 +159,10 @@ public class DataRequest {
         return securitiesEntities;
     }
 
+
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public   List<PricePeriodResponseEntity> getPricePeriodSecurities(StockResponseEntity stockResponseEntity) {
+    public   List<PricePeriodResponseEntity> getPricePeriodSecurities(StockResponseEntity stockResponseEntity,Context context) {
         List<PricePeriodResponseEntity> pricePeriodResponseEntities = new ArrayList<>();
         Gson gson = new Gson();
         PricePeriodRequestEntity pricePeriodRequestEntity = new PricePeriodRequestEntity();
@@ -251,9 +266,6 @@ public class DataRequest {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(d);
     }
-
-
-
 }
 
 
