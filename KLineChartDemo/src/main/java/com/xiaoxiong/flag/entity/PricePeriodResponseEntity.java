@@ -144,4 +144,16 @@ public class PricePeriodResponseEntity  {
                 ", pre_close='" + pre_close + '\'' +
                 '}';
     }
+
+    public KLineEntity obtain(){
+        KLineEntity kLineEntity = new KLineEntity();
+        kLineEntity.code = code;
+        kLineEntity.date = date;
+        kLineEntity.open =  Float.valueOf(open);
+        kLineEntity.close = Float.valueOf(close);
+        kLineEntity.high = Float.valueOf(high);
+        kLineEntity.low = Float.valueOf(low);
+        kLineEntity.volume = Float.valueOf(volume);
+        return kLineEntity;
+    }
 }

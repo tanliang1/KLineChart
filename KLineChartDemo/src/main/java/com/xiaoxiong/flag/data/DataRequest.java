@@ -95,14 +95,12 @@ public class DataRequest {
         return "";
     }
 
-    public List<StockResponseEntity> getTestStocks() {
-        List<StockResponseEntity> getAllSecurities = new ArrayList<>();
+    public StockResponseEntity getTestStocks(int segment) {
         StockResponseEntity stockResponseEntity = new StockResponseEntity();
-        stockResponseEntity.setCode("000001.XSHE");
-        stockResponseEntity.setStart_date("1991-04-03");
-        stockResponseEntity.setEnd_date(getCurFormatDate());
-        getAllSecurities.add(stockResponseEntity);
-        return getAllSecurities;
+        stockResponseEntity.setCode("000004.XSHE");
+        stockResponseEntity.setStart_date((1991+segment*4)+"-04-03");
+        stockResponseEntity.setEnd_date((1991+(segment+1)*4)+"-04-03");
+        return stockResponseEntity;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -263,7 +261,7 @@ public class DataRequest {
 
     private String getCurFormatDate() {
         Date d = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(d);
     }
 }

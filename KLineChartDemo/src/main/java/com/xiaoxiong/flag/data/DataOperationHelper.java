@@ -4,6 +4,7 @@ import android.content.ContentProviderOperation;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.OperationApplicationException;
+import android.database.Cursor;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
@@ -15,8 +16,13 @@ import com.xiaoxiong.flag.ui.KLineEntity;
 import com.xiaoxiong.flag.utils.LogUtil;
 import com.xiaoxiong.flag.utils.SharedPreferencesUtil;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class DataOperationHelper {
@@ -33,49 +39,114 @@ public class DataOperationHelper {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void initData(Context context) {
-        stockResponseEntities =  DataRequest.getInstance().getTestStocks();
-        for (int i = 0; i < 1/*stockResponseEntities.size()*/ ;i++) {
-            StockResponseEntity stockResponseEntity = stockResponseEntities.get(i);
-            if (sStockPriceHashMap.get(stockResponseEntity.getCode()) == null) {
-                List<PricePeriodResponseEntity> pricePeriodResponseEntities = DataRequest.getInstance().getPricePeriodSecurities(stockResponseEntity,context);
-                sStockPriceHashMap.put(stockResponseEntity.getCode(),pricePeriodResponseEntities);
-                List<PricePeriodResponseEntity> subList = pricePeriodResponseEntities.subList(pricePeriodResponseEntities.size()-15,pricePeriodResponseEntities.size()-1);
-                insertData(subList,context);
-            }
+        LinkedList<PricePeriodResponseEntity> pricePeriodResponseEntities = new LinkedList<PricePeriodResponseEntity>();
+        for (int i = 0; i < 10/*stockResponseEntities.size()*/ ;i++) {
+            StockResponseEntity stockResponseEntity =  DataRequest.getInstance().getTestStocks(i);
+            pricePeriodResponseEntities.addAll(DataRequest.getInstance().getPricePeriodSecurities(stockResponseEntity,context)) ;
         }
-        /*Gson gson = new Gson();
-        String stocksPrice = gson.toJson(sStockPriceHashMap);
-        String allSecurities = gson.toJson(stockResponseEntities);
-        SharedPreferencesUtil.put(context, STOCKS_KEY,stocksPrice);
-        SharedPreferencesUtil.put(context, ALL_SECURITIES_KEY,allSecurities);*/
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            pricePeriodResponseEntities.sort(new Comparator<PricePeriodResponseEntity>() {
+                @Override
+                public int compare(PricePeriodResponseEntity o1, PricePeriodResponseEntity o2) {
+                    return compareDate(o1.getDate(),o2.getDate()) ? -1: 1;
+                }
+            });
+        }
+        List<KLineEntity> lineEntityList = buildKlineEntities(pricePeriodResponseEntities);
+        DataHelper.calculate(lineEntityList);
+        insertData(lineEntityList,context);
         LogUtil.d(TAG,"initData,sStockPriceHashMap:"+sStockPriceHashMap);
+    }
+
+    private static  boolean compareDate(String beginTime ,String endTime) {
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        Date bt= null;
+        try {
+            bt = sdf.parse(beginTime);
+            Date et=sdf.parse(endTime);
+            if (bt.before(et)){
+                return true;
+            } else{
+                return false;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return true;
+
+    }
+
+ /*   @RequiresApi(api = Build.VERSION_CODES.O)
+    private List<KLineEntity> getDataFromDb(Context context) {
+        String[] projections = new String[]{"index_key", "code", "date", "open", "close", "high", "lowest"};
+        List<KLineEntity> kLineEntities = new ArrayList<>();
+        try {
+            KLineEntity entity;
+            Cursor cursor = context.getContentResolver().query(FlagProvider.STOCK_PRICE_CONTENT_URI, projections, null, null);
+            while (cursor != null && cursor.moveToNext()) {
+                entity = new KLineEntity();
+                entity.code = (cursor.getString(cursor
+                        .getColumnIndex("code")));
+                entity.date = (cursor.getString(cursor
+                        .getColumnIndex("date")));
+                entity.open = cursor.getFloat(cursor
+                        .getColumnIndex("open"));
+                entity.close = cursor.getFloat(cursor
+                        .getColumnIndex("close"));
+                entity.high = (cursor.getFloat(cursor
+                        .getColumnIndex("high")));
+                entity.low = (String.valueOf(cursor.getFloat(cursor
+                        .getColumnIndex("lowest"))));
+                kLineEntities.add(entity);
+            }
+        } catch (Exception ex) {
+
+        }
+
+        return pricePeriodResponseEntities;
+    }
+*/
+    private static List<KLineEntity>  buildKlineEntities(List<PricePeriodResponseEntity> pricePeriodResponseEntities) {
+        List<KLineEntity> list = new ArrayList();
+        for(PricePeriodResponseEntity entity : pricePeriodResponseEntities) {
+            list.add(entity.obtain());
+        }
+        return list;
     }
 
 
 
-    public static void insertData(List<PricePeriodResponseEntity> entities,Context context) {
+    public static void insertData(List<KLineEntity> entities,Context context) {
         ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
         try {
             for (int i = 0;i< entities.size();i++) {
-                PricePeriodResponseEntity pricePeriodResponseEntity = entities.get(i);
+                KLineEntity pricePeriodResponseEntity = entities.get(i);
                 ContentValues contentValues = new ContentValues();
-                contentValues.put("index_key",pricePeriodResponseEntity.getDate()+pricePeriodResponseEntity.getCode());
-                contentValues.put("code",pricePeriodResponseEntity.getCode());
-                contentValues.put("open",Float.valueOf(pricePeriodResponseEntity.getOpen()));
-                contentValues.put("close",Float.valueOf(pricePeriodResponseEntity.getClose()));
-                contentValues.put("high",Float.valueOf(pricePeriodResponseEntity.getHigh()== null ? "" : pricePeriodResponseEntity.getHigh()));
-                contentValues.put("lowest",Float.valueOf(pricePeriodResponseEntity.getLow()== null ? "" : pricePeriodResponseEntity.getLow()));
+                contentValues.put("index_key",pricePeriodResponseEntity.getDate()+pricePeriodResponseEntity.code);
+                contentValues.put("code",pricePeriodResponseEntity.code);
+                contentValues.put("date",pricePeriodResponseEntity.getDate());
+                contentValues.put("open",pricePeriodResponseEntity.open);
+                contentValues.put("close",pricePeriodResponseEntity.close);
+                contentValues.put("high",pricePeriodResponseEntity.high);
+                contentValues.put("lowest",pricePeriodResponseEntity.low);
+                contentValues.put("k",pricePeriodResponseEntity.k);
+                contentValues.put("d",pricePeriodResponseEntity.d);
+                contentValues.put("j",pricePeriodResponseEntity.j);
+                contentValues.put("acrossType",pricePeriodResponseEntity.acrossType);
+                context.getContentResolver().insert(FlagProvider.STOCK_PRICE_CONTENT_URI,contentValues);
+                /*
 
                 ops.add(ContentProviderOperation.newInsert(FlagProvider.STOCK_PRICE_CONTENT_URI).withValues(contentValues).build());
-                /*context.getContentResolver().insert(FlagProvider.STOCK_PRICE_CONTENT_URI,contentValues);*/
+*/
             }
-            context.getContentResolver().applyBatch(FlagProvider.AUTHORITY,ops);
+            /*context.getContentResolver().applyBatch(FlagProvider.AUTHORITY,ops);*/
         } catch (Exception ex) {
             LogUtil.d(TAG,"insertData,ex:"+ex);
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+ /*   @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void saveData (Context context) {
         if (stockResponseEntities == null) {
             return;
@@ -97,11 +168,11 @@ public class DataOperationHelper {
                       sKlineEntities.add(kLineEntity);
                   }
                 sKlineMap.put(stockResponseEntity.getCode(),sKlineEntities);
-                /*insertData(pricePeriodResponseEntities,context);*/
+                *//*insertData(pricePeriodResponseEntities,context);*//*
             }
-    }
+    }*/
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    /*@RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void calculateDate(Context context) {
         if (stockResponseEntities == null) {
             return;
@@ -115,9 +186,9 @@ public class DataOperationHelper {
         Gson gson = new Gson();
         String fromJson = gson.toJson(sKlineMap);
         SharedPreferencesUtil.put(context, KLINES_KEY,fromJson);
-    }
+    }*/
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+   /* @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void updateDate(Context context) {
         if (stockResponseEntities == null) {
             return;
@@ -130,7 +201,7 @@ public class DataOperationHelper {
             String fromJson = gson.toJson(sKlineEntities);
             SharedPreferencesUtil.put(context, KLINES_KEY +stockResponseEntity.getCode(),fromJson);
         }
-    }
+    }*/
 
 
 

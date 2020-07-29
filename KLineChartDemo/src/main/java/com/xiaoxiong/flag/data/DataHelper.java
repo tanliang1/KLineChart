@@ -110,7 +110,6 @@ public class DataHelper {
 
         for (int i = 0; i < dataList.size(); i++) {
             KLineEntity point = dataList.get(i);
-            if (point.date == "2020-07-08" || point.date == "2020-07-07")
             if (point.acrossType == ACROSS_TYPE_LIVE) {
                 Log.d(TAG," kdj:jingcha "+point.getDate());
             } else if (point.acrossType == ACROSS_TYPE_DEAD) {
@@ -118,7 +117,6 @@ public class DataHelper {
             } else {
 
             }
-
         }
     }
 

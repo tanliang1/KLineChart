@@ -113,6 +113,7 @@ public class FlagProvider extends ContentProvider {
                 break;
             default:
                 break;
-        }return tableName;
+        }
+        return tableName;
     }
 }
