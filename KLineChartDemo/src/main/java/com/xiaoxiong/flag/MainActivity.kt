@@ -9,6 +9,7 @@ import android.widget.TextView
 import com.xiaoxiong.flag.data.DataHelper
 import com.xiaoxiong.flag.data.DataRequest
 import com.xiaoxiong.flag.data.DataOperationHelper
+import com.xiaoxiong.flag.picture.CheckPicture
 import com.xiaoxiong.flag.ui.KLineChartAdapter
 import com.xiaoxiong.flag.ui.KLineEntity
 import com.xiaoxiong.flag.ui.draw.Status
@@ -78,6 +79,7 @@ class MainActivity : AppCompatActivity() {
                 kLineChartView.changeMainDrawType(Status.BOLL)
             }
             doAsync {
+                CheckPicture.getInstance(this@MainActivity).jiexi();
                 DataOperationHelper.initData(this@MainActivity)
               /*  DataOperationHelper.saveData(this@MainActivity)
                 DataOperationHelper.calculateDate(this@MainActivity)*/
