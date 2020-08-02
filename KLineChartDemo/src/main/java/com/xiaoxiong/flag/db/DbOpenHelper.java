@@ -16,7 +16,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 
     private static final int DB_VERSION = 1;
     private String CREATE_PRICE_TABLE = "CREATE TABLE IF NOT EXISTS "+ STOCK_PRICE_TABLE_NAME + "(index_key string primary key,code varchar(30)," +
-            "date var(30),open Float,close Float,high Float,lowest Float,k Float,d  Float,j Float)";
+            "date var(30),open Float,close Float,high Float,lowest Float,k Float,d  Float,j Float,acrossType Int)";
     private String CREATE_STOCKS_TABLE = "CREATE TABLE IF NOT EXISTS "+ STOCKS_TABLE_NAME + "(index_key string primary key,date varchar(30),code varchar(30)," +
             "open Float,close Float,high Float,lowest Float,k Float,d Float,j Float,acrossType Int)";
 

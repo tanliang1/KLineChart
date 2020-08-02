@@ -13,8 +13,8 @@ import java.util.List;
  */
 public class DataHelper {
     private final  static  String  TAG = "DataHelper";
-    private final  static  int  ACROSS_TYPE_LIVE = 1;
-    private final  static  int  ACROSS_TYPE_DEAD = 2;
+    public final  static  int  ACROSS_TYPE_LIVE = 1;
+    public final  static  int  ACROSS_TYPE_DEAD = 2;
 
 
     /**

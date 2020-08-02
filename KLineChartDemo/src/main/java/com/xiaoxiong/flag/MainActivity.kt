@@ -80,7 +80,9 @@ class MainActivity : AppCompatActivity() {
             }
             doAsync {
                 CheckPicture.getInstance(this@MainActivity).jiexi();
+/*
                 DataOperationHelper.initData(this@MainActivity)
+*/
               /*  DataOperationHelper.saveData(this@MainActivity)
                 DataOperationHelper.calculateDate(this@MainActivity)*/
             }
